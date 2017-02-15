@@ -1,4 +1,5 @@
 var tableLength = 10;
+
 var createGrid = function() {
   var grid = "<table>"
   for (var row = 0; row < tableLength; row++) {
@@ -12,14 +13,50 @@ var createGrid = function() {
   return grid;
 }
 
-$('#board').append(createGrid());
+var createField = function() {
+  var grid = "<table>"
+  for (var row = 0; row < tableLength; row++) {
+    grid += '<tr>';
+    for (var col = 0; col < tableLength; col++) {
+      grid += '<td class="cell" data-x=' + col + ' data-y=' + row + '></td>';
+    }
+    grid += '</tr>';
+  }
+  grid += '</table>';
+  return grid;
+}
 
-$('.cell').on('click', function(e) {
+$('#board').append(createGrid());
+$('#battlefield').append(createField());
+
+
+$("#battlefield").on("click",'.cell', function(){
+  $.ajax()
+  console.log("x: " + this.dataset.x + " y: " + this.dataset.y)
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$('#board .cell').on('click', function(e) {
   console.log("x: " + this.dataset.x + " y: " + this.dataset.y)
 })
 
 $("#patrol_boat").on("click", function(){
-  $('.cell').on('mouseover', function(e) {
+  $('#button .cell').on('mouseover', function(e) {
     var boatLength = 2;
     var x = this.dataset.x
     $(this).css('background-color', 'gray');
@@ -33,3 +70,5 @@ $("#patrol_boat").on("click", function(){
     $next.css('background-color', 'white');
   })
 });
+
+

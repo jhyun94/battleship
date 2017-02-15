@@ -13,3 +13,11 @@ body {
   height: 50px;
   width: 50px;
 }
+
+.ship {
+  background-color: black;
+}
+
+.phantom {
+  background-color: grey;
+}

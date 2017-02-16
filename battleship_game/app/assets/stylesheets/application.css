@@ -13,9 +13,6 @@
  *= require_tree .
  *= require_self
  */
-* {
-  border: 1px solid red;
-}
 #home{
   background-color: white;
 }
@@ -24,11 +21,6 @@ body {
   background-color: black;
 }
 
-/*canvas {
-  display: block;
-  margin: auto;
-  background-color: white;
-}*/
 h1 {
   color: white;
 }

@@ -1,5 +1,6 @@
 <div>
-<h1 class="player_1">Player 1</h1>
+  <h1 class="player_1">Player <%= session[:player] %></h1>
+  <h1 class="current_turn">It is Player <%= @game.current_player %>'s turn</h1>
 <h1 class="opponent">Opponent</h1>
 </div>
 <div class="clear">

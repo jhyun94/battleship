@@ -2,12 +2,6 @@ body {
   background-color: black;
 }
 
-/*canvas {
-  display: block;
-  margin: auto;
-  background-color: white;
-}*/
-
 .cell {
   background-color: white;
   height: 50px;

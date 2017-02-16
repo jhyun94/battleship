@@ -34,10 +34,15 @@ class GamesController < ApplicationController
     case game.current_player
     when 1
       response = game.player_2_positions.include?(coordinate) ? "hit" : "miss"
+      game.current_player = game.current_player == 1 ? 2 : 1
     when 2
       response = game.player_1_positions.include?(coordinate) ? "hit" : "miss"
+      game.current_player = game.current_player == 1 ? 2 : 1
+    else
+      response = "ERROR"
     end
-    game.current_player = game.current_player == 1 ? 2 : 1
+    game.save
+    render json: {response: response, current_player: game.current_player}
   end
 
   def create

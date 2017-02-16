@@ -13,7 +13,9 @@
  *= require_tree .
  *= require_self
  */
-
+* {
+  border: 1px solid red;
+}
 #home{
   background-color: white;
 }
@@ -27,27 +29,46 @@ body {
   margin: auto;
   background-color: white;
 }*/
-
+h1 {
+  color: white;
+}
 .cell {
   background-color: white;
   height: 50px;
   width: 50px;
 }
 
-#board {
+.game {
+  width:100%;
+}
+#player_board {
   display: inline-block;
-  width: 500px;
+  float: left;
+  /*float: left;*/
+  width: 40%;
 }
 
-#battlefield {
+#opponent_board {
   display: inline-block;
-  width: 500px;
+  float: right;
+  width: 40%;
+}
+.player_1 {
+  float: left;
 }
 
+.opponent{
+  float: right;
+  margin-right: 25%;
+}
 .ship {
   background-color: black;
 }
 
 .phantom {
   background-color: grey;
+}
+
+.clear {
+  clear: both;
 }

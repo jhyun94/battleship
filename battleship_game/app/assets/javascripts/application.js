@@ -45,5 +45,4 @@ var createField = function() {
 }
 
 $('#board').append(createGrid());
-
 })

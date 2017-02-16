@@ -5,7 +5,7 @@ class GamesController < ApplicationController
   end
 
   def new
-    if params[:game_id] 
+    if params[:game_id]
       @game = Game.find(params[:game_id])
       session[:player] = 2
     else
@@ -32,13 +32,13 @@ class GamesController < ApplicationController
     session[:player] = 2
     redirect_to game_url(game)
   end
- 
+
   def show
-    game = Game.find(params[:id])
+    @game = Game.find(params[:id])
     if session[:player] == 1
-      @positions = game.player_1_positions
+      @positions = @game.player_1_positions
     elsif session[:player] == 2
-      @positions = game.player_2_positions
+      @positions = @game.player_2_positions
     end
   end
 

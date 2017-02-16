@@ -48,14 +48,25 @@ var createNewGrid = function(positions) {
 
   $("#opponent_board .cell").on('click', function(e){
     console.log($(this.dataset));
+    var cell = this;
     var gameId = $('#player_board').attr('class');
     console.log(gameId);
     var cell_position = this.dataset.x + this.dataset.y
     $.ajax({
       url: "/games/" + gameId + "/check?cell_position=" + cell_position,
       type: "GET"
-    }).done(function(response){
-      console.log(response);
+    }).done(function(data){
+      console.log(data);
+      console.log(cell);
+      $(cell).off();
+      if (data.response === "hit"){
+        $(cell).addClass('hit');
+      } else if (data.response === "miss") {
+        $(cell).addClass('miss');
+      } else {
+        console.log(data.response);
+      }
+
     })
   })
 

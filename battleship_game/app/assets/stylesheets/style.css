@@ -8,6 +8,14 @@ body {
   width: 50px;
 }
 
+.cell.hit {
+  background-color: red;
+}
+
+.miss {
+  background-color: blue;
+}
+
 #board {
   display: inline-block;
   width: 500px;

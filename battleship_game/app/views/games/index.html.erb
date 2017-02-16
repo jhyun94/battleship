@@ -1,0 +1,18 @@
+<main id="home">
+<h1>Battleship</h1>
+<table>
+<!--   <tr>
+    <th>Title</th>
+    <th>Body</th>
+  </tr>
+ -->
+  <% @games.each do |game| %>
+    <tr>
+      <td><%= link_to "Game #{game.id}", game_url(game) %></td
+    </tr>
+  <% end %>
+  <tr>
+    <td><%= link_to 'New Game', @game %></td>
+  </tr>
+</table>
+</main>

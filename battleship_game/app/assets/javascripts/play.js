@@ -26,10 +26,46 @@ var createNewGrid = function(positions) {
   return grid;
 }
 
-  $("#board").html(createNewGrid(positions));
+  $("#player_board").html(createNewGrid(positions));
 
   for (var i = 0; i < positions.length; i++) {
     $('td[data-x=' + positions[i].x + '][data-y=' + positions[i].y + ']').addClass('ship');
   }
+
+  var createGrid = function() {
+    var grid = "<table>"
+    for (var row = 0; row < tableLength; row++) {
+      grid += '<tr>';
+      for (var col = 0; col < tableLength; col++) {
+        grid += '<td class="cell" data-x=' + col + ' data-y=' + row + '></td>';
+      }
+      grid += '</tr>';
+    }
+    grid += '</table>';
+    return grid;
+  }
+  $('#opponent_board').append(createGrid());
+
+  $("#opponent_board .cell").on('click', function(e){
+    console.log($(this.dataset));
+    var gameId = $('#player_board').attr('class');
+    console.log(gameId);
+    var cell_position = this.dataset.x + this.dataset.y
+    $.ajax({
+      url: "/games/" + gameId + "/check?cell_position=" + cell_position,
+      type: "GET"
+    }).done(function(response){
+      console.log(response);
+    })
+  })
+
+
+
+
+
+
+
+
+
 
 })

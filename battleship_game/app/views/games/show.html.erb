@@ -1,3 +1,13 @@
-<div id="board">
+<div>
+<h1 class="player_1">Player 1</h1>
+<h1 class="opponent">Opponent</h1>
+</div>
+<div class="clear">
+</div>
+<main class="game">
+<div id="player_board" class="<%= @game.id %>">
   <div id="player_positions" style="display: none"><%= @positions.to_s %></div>
 </div>
+  <div id="opponent_board">
+  </div>
+</main>

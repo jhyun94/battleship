@@ -349,20 +349,15 @@ $("#carrier").on("click", function(){
   })
 });
 
-$('#start-game').on('click', function(e) {
-  var data = {
-    game: { player_1_positions: shipPositions($('.ship')) },
-    board: $('#board').html()
-  }
-  $.ajax({
-    method: 'post',
-    url: '/games',
-    data: data
-  }).done(function(response) {
-    console.log(response);
-    window.location = response;
-  })
-
+$('form').on('submit', function(e) {
+  e.preventDefault(e);
+  var data = { player_positions: shipPositions($('.ship')) }
+  var input = $("<input>")
+              .attr("type", "hidden")
+              .attr("name", "player_positions").val(shipPositions($('.ship')));
+	$(this).append($(input));
+	$(this).off();
+	$(this).submit();
 })
 
 // Extracts ship positions and sends them to database

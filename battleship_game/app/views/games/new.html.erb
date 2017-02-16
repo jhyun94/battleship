@@ -8,7 +8,8 @@
   <button id="battleship">Battleship</button>
   <button id="carrier">Carrier</button>
   <button id="rotate">Rotate Ship</button>
-  <button id="start-game">BATTLE!</button>
+  <%= form_for @game do |f| %>
+    <% f.submit "BATTLE!" %>
+  <% end %>
 </div>
 
-<!-- <script src="/onboard.js"></script> -->

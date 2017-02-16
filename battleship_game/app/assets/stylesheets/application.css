@@ -17,12 +17,6 @@ body {
   background-color: black;
 }
 
-/*canvas {
-  display: block;
-  margin: auto;
-  background-color: white;
-}*/
-
 .cell {
   background-color: white;
   height: 50px;
@@ -39,10 +33,7 @@ body {
   width: 500px;
 }
 
-.ship {
-  background-color: black;
+.ship, .phantom {
+  background-color: gray;
 }
 
-.phantom {
-  background-color: grey;
-}

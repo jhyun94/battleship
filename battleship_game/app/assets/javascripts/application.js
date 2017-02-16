@@ -1,235 +1,135 @@
-// This is a manifest file that'll be compiled into application.js, which will include all the files
-// listed below.
-//
-// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
-// or any plugin's vendor/assets/javascripts directory can be referenced here using a relative path.
-//
-// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
-// compiled file. JavaScript code in this file should be added after the last require_* statement.
-//
-// Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
-// about supported directives.
-//
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
-$(document).ready(function() {
-var tableLength = 10;
 
-var createGrid = function() {
-  var grid = "<table>"
-  for (var row = 0; row < tableLength; row++) {
-    grid += '<tr>';
-    for (var col = 0; col < tableLength; col++) {
-      grid += '<td class="cell" data-x=' + col + ' data-y=' + row + '></td>';
-    }
-    grid += '</tr>';
-  }
-  grid += '</table>';
-  return grid;
+var orientation = 'vertical';
+
+function Cell(x, y) {
+  this.x = x;
+  this.y = y;
 }
 
-var createField = function() {
-  var grid = "<table>"
-  for (var row = 0; row < tableLength; row++) {
-    grid += '<tr>';
-    for (var col = 0; col < tableLength; col++) {
-      grid += '<td class="cell" data-x=' + col + ' data-y=' + row + '></td>';
-    }
-    grid += '</tr>';
-  }
-  grid += '</table>';
-  return grid;
+Cell.prototype.toHtml = function() {
+  var $cell = $('<td></td>');
+  $cell.addClass('cell').attr('data-x', this.x).attr('data-y', this.y);
+  return $cell;
 }
 
-$('#board').append(createGrid());
-$('#battlefield').append(createField());
+function Game() {
+  this.createBoard();
+  this.bindSetupEvents(orientation);
+}
 
-$("#battlefield").on("click",'.cell', function(){
-  $.ajax()
-  console.log("x: " + this.dataset.x + " y: " + this.dataset.y)
-})
+Game.prototype.ships = [
+  {
+    buttonId: '#destroyer',
+    length: 2
+  },
+  {
+    buttonId: '#submarine',
+    length: 3
+  },
+  {
+    buttonId: '#cruiser',
+    length: 3
+  },
+  {
+    buttonId: '#battleship',
+    length: 4
+  },
+  {
+    buttonId: '#carrier',
+    length: 5
+  }
+]
 
-$("#destroyer").on("click", function(){
-  $('.cell').on('mouseover', function(e) {
-    var boatLength = 2;
-    var x = this.dataset.x;
+Game.prototype.createBoard = function() {
+  var tableLength = 10; 
+
+  for (var col = 0; col < tableLength; col++) {
+    var $boardRow = $('<tr></tr>');
+    $('#board').append($boardRow);
+    for (var row = 0; row < tableLength; row++) {
+      $boardRow.append(new Cell(row, col).toHtml());
+    }
+  }
+}
+
+Game.prototype.bindCellEvents = function(ship, orientation) {
+  $('.cell').on('mouseover', function() {
+    var x = parseInt(this.dataset.x);
     var y = parseInt(this.dataset.y);
-    $(this).addClass("phantom");
-    var $next = $('td[data-x=' + x + '][data-y=' + (y + 1) + ']')
-    $next.addClass("phantom");
-  })
-  $('.cell').on('mouseleave', function(e) {
-    $(this).removeClass("phantom");
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    var $next = $('td[data-x=' + x + '][data-y=' + (y + 1) + ']')
-    $next.removeClass("phantom");
-  })
-  $('.cell').on('click', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(".cell").off('mouseover');
-    $(".cell").off('mouseleave');
-    $(this).addClass("ship")
-    $('td[data-x=' + x + '][data-y=' + (y + 1) + ']').css("background-color", "").addClass("ship").removeClass('phantom');
-    $("#destroyer").hide();
-    $(this).removeClass('phantom');
-
-  });
-});
-
-$("#submarine").on("click", function(){
-  var boatLength = 3;
-  $('.cell').on('mouseover', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(this).addClass("phantom");
-    for (var i=1; i < boatLength; i++ ){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("phantom");
+    $(this).addClass('phantom');
+    for (var i = 1; i < ship.length; i++) {
+      if (orientation == 'horizontal') {
+        x += 1;
+      } else {
+        y += 1;
       }
-  })
-  $('.cell').on('mouseleave', function(e) {
-    $(this).removeClass("phantom");
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    for (i=1; i<boatLength; i++){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').removeClass("phantom");
+      $('td[data-x=' + x + '][data-y=' + y + ']').addClass('phantom');
     }
-  })
-  $('.cell').on('click', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(".cell").off('mouseover');
-    $(".cell").off('mouseleave');
-    $(this).addClass("ship")
-     for(i=1; i<boatLength; i++){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("ship").removeClass('phantom');
-    }
-    $("#submarine").hide();
+  }).on('mouseleave', function() {
+    var x = parseInt(this.dataset.x);
+    var y = parseInt(this.dataset.y);
     $(this).removeClass('phantom');
-  });
-})
-
-$("#cruiser").on("click", function(){
-  var boatLength = 3;
-  $('.cell').on('mouseover', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(this).addClass("phantom");
-    for (var i=1; i < boatLength; i++ ){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("phantom");
+    for (var i = 1; i < ship.length; i++) {
+      if (orientation == 'horizontal') {
+        x += 1;
+      } else {
+        y += 1;
       }
-  })
-  $('.cell').on('mouseleave', function(e) {
-    $(this).removeClass("phantom");
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    for (i=1; i<boatLength; i++){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').removeClass("phantom");
+      $('td[data-x=' + x + '][data-y=' + y + ']').removeClass('phantom');
     }
-  })
-  $('.cell').on('click', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(".cell").off('mouseover');
-    $(".cell").off('mouseleave');
-    $(this).addClass("ship")
-     for(i=1; i<boatLength; i++){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("ship").removeClass('phantom');
-    }
-    $("#cruiser").hide();
-    $(this).removeClass('phantom');
-  });
-});
-
-$("#battleship").on("click", function(){
-  var boatLength = 4;
-  $('.cell').on('mouseover', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(this).addClass("phantom");
-    for (var i=1; i < boatLength; i++ ){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("phantom");
+  }).on('click', function() {
+    var x = parseInt(this.dataset.x);
+    var y = parseInt(this.dataset.y);
+    $(ship.buttonId).remove();
+    $('.cell').off('mouseover').off('mouseleave'); 
+    $(this).addClass('ship');
+    for (var i = 1; i < ship.length; i++) {
+      if (orientation == 'horizontal') {
+        x += 1;
+      } else {
+        y += 1;
       }
-  })
-  $('.cell').on('mouseleave', function(e) {
-    $(this).removeClass("phantom");
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    for (i=1; i<boatLength; i++){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').removeClass("phantom");
+      $('td[data-x=' + x + '][data-y=' + y + ']').addClass('ship');
     }
-  })
-  $('.cell').on('click', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(".cell").off('mouseover');
-    $(".cell").off('mouseleave');
-    $(this).addClass("ship")
-    for(i=1; i<boatLength; i++){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("ship").removeClass('phantom');
-    }
-    $("#battleship").hide();
-    $(this).removeClass('phantom');
   });
-});
-
-$("#carrier").on("click", function(){
-    var boatLength = 5;
-  $('.cell').on('mouseover', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(this).addClass("phantom");
-    for (var i=1; i < boatLength; i++ ){
-    $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("phantom");
-  }
-  })
-  $('.cell').on('mouseleave', function(e) {
-    $(this).removeClass("phantom");
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    for (i=1; i<boatLength; i++){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').removeClass("phantom");
-    }
-  })
-  $('.cell').on('click', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(".cell").off('mouseover');
-    $(".cell").off('mouseleave');
-    $(this).addClass("ship")
-    for(i=1; i<boatLength; i++){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("ship").removeClass('phantom');
-    }
-    $("#carrier").hide();
-    $(this).removeClass('phantom');
-  });
-});
-
-$('#start-game').on('click', function(e) {
-  var data = { game: { player_1_positions: shipPositions($('.ship')) } }
-  $.ajax({
-    method: 'post',
-    url: '/games',
-    data: data
-  }).done(function(response) {
-    console.log(response);
-    window.location = response;
-  })
-
-})
-
-// Extracts ship positions and sends them to database
-function shipPositions(cells) {
-  var result = ""
-  for (var i = 0; i < cells.length; i++) {
-    result += cells[i].dataset.x
-    result += cells[i].dataset.y
-    result += " ";
-  }
-  return result;
 }
 
-})
+Game.prototype.setShip = function(ship, orientation) {
+  var game = this;
+  $(ship.buttonId).on('click', function() {
+    game.bindCellEvents(ship, orientation);
+    $("#rotate-ship").on("click", function(){
+      if (orientation === 'horizontal') {
+        orientation = 'vertical';
+      } else {
+        orientation = 'horizontal';
+      }
+      $(".cell").off();
+      game.bindCellEvents(ship, orientation);
+    });
+  })
+}
+
+Game.prototype.bindSetupEvents = function(orientation) {
+  for (var i = 0; i < this.ships.length; i++) {
+    this.setShip(this.ships[i], orientation);
+  }
+}
+
+// function switchOrientation() {
+//   if (orientation == 'vertical') {
+//     orientation = 'horizontal'
+//   } else {
+//     orientation = 'vertical'
+//   }
+// }
+
+$(document).ready(function() {
+
+  var game = new Game();
+  
+});

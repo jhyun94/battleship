@@ -44,6 +44,6 @@ var createField = function() {
   return grid;
 }
 
-// $('#board').append(createGrid());
+$('#board').append(createGrid());
 
 })

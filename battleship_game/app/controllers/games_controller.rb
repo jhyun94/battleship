@@ -7,27 +7,37 @@ class GamesController < ApplicationController
   def new
     if params[:game_id] 
       @game = Game.find(params[:game_id])
+      session[:player] = 2
     else
+      session[:player] = 1
       @game = Game.new
     end
   end
 
   def create
-    if session[:player] = 1
+    if session[:player] == 1
       game = Game.create(player_1_positions: game_params[:player_positions])
-    elsif session[:player] = 2
-      game = Game.find(params[:game_id])
-      game.player_2_positions = game_params
-      game.save
+    # elsif session[:player] = 2
+    #   game = Game.find(params[:game_id])
+    #   game.player_2_positions = game_params
+    #   game.save
     end
     redirect_to game_url(game)
   end
 
+  def update
+    game = Game.find(params[:id])
+    game.player_2_positions = game_params[:player_positions]
+    game.save
+    session[:player] = 2
+    redirect_to game_url(game)
+  end
+ 
   def show
     game = Game.find(params[:id])
-    if session[:player] = 1
+    if session[:player] == 1
       @positions = game.player_1_positions
-    elsif session[:player] = 2
+    elsif session[:player] == 2
       @positions = game.player_2_positions
     end
   end

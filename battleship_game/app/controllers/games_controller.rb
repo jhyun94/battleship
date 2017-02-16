@@ -31,18 +31,14 @@ class GamesController < ApplicationController
   def check
     game = Game.find(params[:id])
     coordinate = params[:cell_position]
-    case game.current_player
-    when 1
-      response = game.player_2_positions.include?(coordinate) ? "hit" : "miss"
-      game.current_player = game.current_player == 1 ? 2 : 1
-    when 2
-      response = game.player_1_positions.include?(coordinate) ? "hit" : "miss"
-      game.current_player = game.current_player == 1 ? 2 : 1
+    if game.hit?(coordinate)
+      game.add_hit(coordinate)
     else
-      response = "ERROR"
+      game.add_miss(coordinate)
     end
+    game.current_player = game.current_player == 1 ? 2 : 1
     game.save
-    render json: {response: response, current_player: game.current_player}
+    redirect_to game_url(game)
   end
 
   def create

@@ -19,9 +19,10 @@ var buttons_clicked = 0
 var track_buttons = function() {
   buttons_clicked += 1
   if (buttons_clicked === 5) {
-  $(".new_game").show();
-  $("#rotate").hide();
+    $(".new_game").show();
+    $("#rotate").hide();
   }
+  buttons_clicked = 0;
 }
 
 $("#destroyer").on("click", function(){

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     member do
       get 'current_player'
       get 'check'
+      post 'winner'
     end
   end
 

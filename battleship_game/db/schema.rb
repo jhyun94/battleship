@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170216221751) do
+ActiveRecord::Schema.define(version: 20170217160218) do
 
   create_table "games", force: :cascade do |t|
     t.string   "player_1_positions",              null: false
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20170216221751) do
     t.string   "player_1_misses",    default: ""
     t.string   "player_2_hits",      default: ""
     t.string   "player_2_misses",    default: ""
+    t.string   "winner",             default: ""
   end
 
 end

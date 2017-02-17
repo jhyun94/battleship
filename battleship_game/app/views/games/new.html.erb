@@ -1,3 +1,5 @@
+<h1>Welcome to Battleship!</h1>
+<h3>Create a New Board</h3>
 <div id="board" height="400" width="400">
 </div>
 
@@ -9,7 +11,7 @@
   <button id="carrier">Carrier</button>
   <button id="rotate">Rotate Ship</button>
   <%= form_for @game do |f| %>
-    <% f.submit "BATTLE!" %>
+    <% f.submit "BATTLE!", :class => 'battle' %>
   <% end %>
 </div>
 

@@ -13,9 +13,9 @@
  *= require_tree .
  *= require_self
  */
-#home{
+/*#home{
   background-color: white;
-}
+}*/
 
 body {
   background-color: #002F4B;
@@ -24,6 +24,18 @@ body {
 h1 {
   color: white;
 }
+
+#home td {
+  padding: 5px;
+  border-radius: 2px;
+  background-color: white;
+}
+
+#home a, a:visited, a:hover, a:active {
+  color: inherit;
+  text-decoration: none;
+}
+
 
 #board {
   display: inline-block;
@@ -85,4 +97,26 @@ h1 {
 
 .current_turn {
   clear:both;
+}
+
+button {
+  display: inline-block;
+  margin: 0 10px 0 0;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 13px;
+  appearance: none;
+  box-shadow: none;
+}
+
+.battle {
+  display: inline-block;
+  margin: 0 10px 0 0;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 13px;
+  appearance: none;
+  box-shadow: none;
+  border-color: red;
+  background-color: red;
 }

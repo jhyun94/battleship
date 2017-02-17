@@ -1,7 +1,7 @@
 class GamesController < ApplicationController
 
   def index
-    @games = Game.all
+    @games = Game.where(winner: nil)
   end
 
   def new

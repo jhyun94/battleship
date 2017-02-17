@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20170217160218) do
     t.string   "player_1_misses",    default: ""
     t.string   "player_2_hits",      default: ""
     t.string   "player_2_misses",    default: ""
-    t.string   "winner",             default: ""
+    t.string   "winner"
   end
 
 end

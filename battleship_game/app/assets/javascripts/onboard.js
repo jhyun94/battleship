@@ -31,7 +31,6 @@ var trackButtons = function() {
 
 $("#destroyer").on("click", function(){
   $("#rotate").off('click');
-  $(".cell").off('click');
 
   $('.cell').on('mouseover', function(e) {
     var boatLength = 2;
@@ -53,6 +52,7 @@ $("#destroyer").on("click", function(){
     var y = parseInt(this.dataset.y)
     $(".cell").off('mouseover');
     $(".cell").off('mouseleave');
+    $(".cell").off('click');
     $(this).addClass("ship")
     $('td[data-x=' + x + '][data-y=' + (y + 1) + ']').css("background-color", "").addClass("ship").removeClass('phantom');
     $("#destroyer").hide();
@@ -85,6 +85,7 @@ $("#destroyer").on("click", function(){
       var y = parseInt(this.dataset.y)
       $(".cell").off('mouseover');
       $(".cell").off('mouseleave');
+      $(".cell").off('click');
       $(this).addClass("ship")
       $('td[data-x=' + (x+1) + '][data-y=' + y + ']').css("background-color", "").addClass("ship").removeClass('phantom');
       $("#destroyer").hide();
@@ -96,7 +97,6 @@ $("#destroyer").on("click", function(){
 
 $("#submarine").on("click", function(){
   $("#rotate").off('click');
-  $(".cell").off('click');
 
   var boatLength = 3;
   $('.cell').on('mouseover', function(e) {
@@ -120,6 +120,7 @@ $("#submarine").on("click", function(){
     var y = parseInt(this.dataset.y)
     $(".cell").off('mouseover');
     $(".cell").off('mouseleave');
+    $(".cell").off('click');
     $(this).addClass("ship")
      for(i=1; i<boatLength; i++){
       $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("ship").removeClass('phantom');
@@ -155,6 +156,7 @@ $("#submarine").on("click", function(){
       var y = parseInt(this.dataset.y)
       $(".cell").off('mouseover');
       $(".cell").off('mouseleave');
+      $(".cell").off('click');
       $(this).addClass("ship")
        for(i=1; i<boatLength; i++){
         $('td[data-x=' + (x+i) + '][data-y=' + y + ']').addClass("ship").removeClass('phantom');
@@ -192,6 +194,7 @@ $("#cruiser").on("click", function(){
     var y = parseInt(this.dataset.y)
     $(".cell").off('mouseover');
     $(".cell").off('mouseleave');
+    $(".cell").off('click');
     $(this).addClass("ship")
      for(i=1; i<boatLength; i++){
       $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("ship").removeClass('phantom');
@@ -227,6 +230,7 @@ $("#cruiser").on("click", function(){
       var y = parseInt(this.dataset.y)
       $(".cell").off('mouseover');
       $(".cell").off('mouseleave');
+      $(".cell").off('click');
       $("#rotate").off('click');
       $(this).addClass("ship")
        for(i=1; i<boatLength; i++){
@@ -241,7 +245,6 @@ $("#cruiser").on("click", function(){
 
 $("#battleship").on("click", function(){
   $("#rotate").off('click');
-  $(".cell").off('click');
 
   var boatLength = 4;
   $('.cell').on('mouseover', function(e) {
@@ -265,6 +268,7 @@ $("#battleship").on("click", function(){
     var y = parseInt(this.dataset.y)
     $(".cell").off('mouseover');
     $(".cell").off('mouseleave');
+    $(".cell").off('click');
     $(this).addClass("ship")
     for(i=1; i<boatLength; i++){
       $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("ship").removeClass('phantom');
@@ -300,6 +304,7 @@ $("#battleship").on("click", function(){
       var y = parseInt(this.dataset.y)
       $(".cell").off('mouseover');
       $(".cell").off('mouseleave');
+      $(".cell").off('click');
       $(this).addClass("ship")
        for(i=1; i<boatLength; i++){
         $('td[data-x=' + (x+i) + '][data-y=' + y + ']').addClass("ship").removeClass('phantom');
@@ -313,7 +318,6 @@ $("#battleship").on("click", function(){
 
 $("#carrier").on("click", function(){
   $("#rotate").off('click');
-  $(".cell").off('click');
 
   var boatLength = 5;
   $('.cell').on('mouseover', function(e) {
@@ -337,6 +341,7 @@ $("#carrier").on("click", function(){
     var y = parseInt(this.dataset.y)
     $(".cell").off('mouseover');
     $(".cell").off('mouseleave');
+    $(".cell").off('click');
     $(this).addClass("ship")
     for(i=1; i<boatLength; i++){
       $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("ship").removeClass('phantom');
@@ -372,6 +377,7 @@ $("#carrier").on("click", function(){
       var y = parseInt(this.dataset.y)
       $(".cell").off('mouseover');
       $(".cell").off('mouseleave');
+      $(".cell").off('click');
       $(this).addClass("ship")
        for(i=1; i<boatLength; i++){
         $('td[data-x=' + (x+i) + '][data-y=' + y + ']').addClass("ship").removeClass('phantom');

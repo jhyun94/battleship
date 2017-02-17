@@ -115,7 +115,7 @@ for (var i = 0; i < player_2_miss_positions.length; i++) {
 }
 
 if (currentPlayer === player) {
-  $("#opponent_board .cell").on('click', function(e){
+  $("#opponent_board .cell").on('click', function(e) {
   var cell = this;
   var gameId = $('#player_board').attr('class');
   var cell_position = this.dataset.x + this.dataset.y
@@ -124,15 +124,15 @@ if (currentPlayer === player) {
     type: "GET"
   }).done(function(data){
     $(cell).off();
-    if (data.response === "hit"){
-    $(cell).addClass('hit');
-    } else if (data.response === "miss") {
-      $(cell).addClass('miss');
-    } else {
-      console.log(data.response);
-    }
-    window.location.reload();
-
+    if (data.response === "hit") {
+      $(cell).addClass('hit');
+      } else if (data.response === "miss") {
+        $(cell).addClass('miss');
+      } else {
+        console.log(data.response);
+      }
+      window.location.reload();
+    })
   })
 }
 

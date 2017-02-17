@@ -1,35 +1,11 @@
-body {
-  background-color: black;
-}
 
-.cell {
-  background-color: white;
-  height: 50px;
-  width: 50px;
-}
 
-.cell.hit {
-  background-color: red;
-}
 
-.miss {
-  background-color: blue;
-}
+
 
 #board {
   display: inline-block;
   width: 500px;
 }
 
-#battlefield {
-  display: inline-block;
-  width: 500px;
-}
 
-.ship {
-  background-color: black;
-}
-
-.phantom {
-  background-color: grey;
-}

@@ -1,6 +1,8 @@
 $(document).ready(function() {
 var tableLength = 10;
 $(".new_game").hide();
+$(".edit_game").hide();
+
 function createGrid() {
   var grid = "<table>"
   for (var row = 0; row < tableLength; row++) {
@@ -15,11 +17,13 @@ function createGrid() {
 }
 
 $('#board').append(createGrid());
-var buttons_clicked = 0
-var track_buttons = function() {
-  buttons_clicked += 1
-  if (buttons_clicked === 5) {
+
+var buttonsClicked = 0
+var trackButtons = function() {
+  buttonsClicked += 1
+  if (buttonsClicked === 5) {
     $(".new_game").show();
+    $(".edit_game").show();
     $("#rotate").hide();
   }
   buttons_clicked = 0;
@@ -53,7 +57,7 @@ $("#destroyer").on("click", function(){
     $('td[data-x=' + x + '][data-y=' + (y + 1) + ']').css("background-color", "").addClass("ship").removeClass('phantom');
     $("#destroyer").hide();
     $(this).removeClass('phantom');
-    track_buttons();
+    trackButtons();
   });
 
   $("#rotate").on("click", function(){
@@ -85,7 +89,7 @@ $("#destroyer").on("click", function(){
       $('td[data-x=' + (x+1) + '][data-y=' + y + ']').css("background-color", "").addClass("ship").removeClass('phantom');
       $("#destroyer").hide();
       $(this).removeClass('phantom');
-      track_buttons();
+      trackButtons();
     });
   });
 });
@@ -122,7 +126,7 @@ $("#submarine").on("click", function(){
     }
     $("#submarine").hide();
     $(this).removeClass('phantom');
-    track_buttons();
+    trackButtons();
   });
 
   $("#rotate").on("click", function(){
@@ -157,7 +161,7 @@ $("#submarine").on("click", function(){
       }
       $("#submarine").hide();
       $(this).removeClass('phantom');
-      track_buttons();
+      trackButtons();
     });
   })
 })
@@ -194,7 +198,7 @@ $("#cruiser").on("click", function(){
     }
     $("#cruiser").hide();
     $(this).removeClass('phantom');
-    track_buttons();
+    trackButtons();
   });
 
   $("#rotate").on("click", function(){
@@ -230,7 +234,7 @@ $("#cruiser").on("click", function(){
       }
       $("#cruiser").hide();
       $(this).removeClass('phantom');
-      track_buttons();
+      trackButtons();
     });
   })
 });
@@ -267,7 +271,7 @@ $("#battleship").on("click", function(){
     }
     $("#battleship").hide();
     $(this).removeClass('phantom');
-    track_buttons();
+    trackButtons();
   });
 
   $("#rotate").on("click", function(){
@@ -302,7 +306,7 @@ $("#battleship").on("click", function(){
       }
       $("#battleship").hide();
       $(this).removeClass('phantom');
-      track_buttons();
+      trackButtons();
     });
   })
 });
@@ -339,7 +343,7 @@ $("#carrier").on("click", function(){
     }
     $("#carrier").hide();
     $(this).removeClass('phantom');
-    track_buttons();
+    trackButtons();
   });
 
    $("#rotate").on("click", function(){
@@ -374,7 +378,7 @@ $("#carrier").on("click", function(){
       }
       $("#carrier").hide();
       $(this).removeClass('phantom');
-      track_buttons();
+      trackButtons();
     });
   })
 });

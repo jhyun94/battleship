@@ -65,8 +65,7 @@ if (winner){
     data: { winner: winner }
   }).done(function(response){
     var $playAgain = $('<a></a>');
-    $playAgain.attr('href', '/');
-    $playAgain.text('Play Again?');
+    $playAgain.attr('href', '/').addClass('play-again').text('Play Again?');
     $('main').append($playAgain);
   });
 }

@@ -1,7 +1,20 @@
 $(document).ready(function() {
 var tableLength = 10;
+var orientation = 'vertical';
+
+// Hide battle buttons
 $(".new_game").hide();
 $(".edit_game").hide();
+var buttonsClicked = 0
+var trackButtons = function() {
+  buttonsClicked += 1
+  if (buttonsClicked === 5) {
+    $(".new_game").show();
+    $(".edit_game").show();
+    $("#rotate").hide();
+  }
+  buttons_clicked = 0;
+}
 
 function createGrid() {
   var grid = "<table>"
@@ -15,379 +28,90 @@ function createGrid() {
   grid += '</table>';
   return grid;
 }
-
 $('#board').append(createGrid());
 
-var buttonsClicked = 0
-var trackButtons = function() {
-  buttonsClicked += 1
-  if (buttonsClicked === 5) {
-    $(".new_game").show();
-    $(".edit_game").show();
-    $("#rotate").hide();
+var ships = [
+  { buttonId: "#destroyer", length: 2 },
+  { buttonId: "#submarine", length: 3 },
+  { buttonId: "#cruiser", length: 3 },
+  { buttonId: "#battleship", length: 4 },
+  { buttonId: "#carrier", length: 5 }
+]
+
+bindSetupEvents(orientation);
+
+function bindSetupEvents(orientation) {
+  for (var i = 0; i < ships.length; i++) {
+    setShip(ships[i], orientation);
   }
-  buttons_clicked = 0;
 }
 
-$("#destroyer").on("click", function(){
-  $("#rotate").off('click');
+function setShip(ship, orientation) {
+  $(ship.buttonId).on('click', function() {
+    bindCellEvents(ship, orientation);
+    $("#rotate").on("click", function(){
+      $('.cell').off();
+      if (orientation === 'horizontal') {
+        orientation = 'vertical';
+      } else {
+        orientation = 'horizontal';
+      }
+      bindCellEvents(ship, orientation);
+    });
+  })
+}
 
+function bindCellEvents(ship, orientation) {
   $('.cell').on('mouseover', function(e) {
-    var boatLength = 2;
-    var x = this.dataset.x;
-    var y = parseInt(this.dataset.y);
+    var x, y;
     $(this).addClass("phantom");
-    var $next = $('td[data-x=' + x + '][data-y=' + (y + 1) + ']')
-    $next.addClass("phantom");
-  })
-  $('.cell').on('mouseleave', function(e) {
-    $(this).removeClass("phantom");
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    var $next = $('td[data-x=' + x + '][data-y=' + (y + 1) + ']')
-    $next.removeClass("phantom");
-  })
-  $('.cell').on('click', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(".cell").off('mouseover');
-    $(".cell").off('mouseleave');
-    $(".cell").off('click');
-    $(this).addClass("ship")
-    $('td[data-x=' + x + '][data-y=' + (y + 1) + ']').css("background-color", "").addClass("ship").removeClass('phantom');
-    $("#destroyer").hide();
-    $(this).removeClass('phantom');
-    trackButtons();
-  });
-
-  $("#rotate").on("click", function(){
-    $(".cell").off('mouseover');
-    $(".cell").off('mouseleave');
-    $(".cell").off('click');
-
-    $('.cell').on('mouseover', function(e) {
-      var boatLength = 2;
-      var x = parseInt(this.dataset.x);
-      var y = parseInt(this.dataset.y);
-      $(this).addClass("phantom");
-      var $next = $('td[data-x=' + (x+1) + '][data-y=' + y + ']')
+    for (var i = 1; i < ship.length; i++) {
+      console.log(ship.length);
+      if (orientation === 'vertical') {
+        x = parseInt(this.dataset.x);
+        y = parseInt(this.dataset.y) + i;
+      } else if (orientation === 'horizontal') {
+        x = parseInt(this.dataset.x) + i;
+        y = parseInt(this.dataset.y);
+      }
+      var $next = $('td[data-x=' + x + '][data-y=' + y + ']')
       $next.addClass("phantom");
-    })
-    $('.cell').on('mouseleave', function(e) {
-      $(this).removeClass("phantom");
-      var x = parseInt(this.dataset.x);
-      var y = parseInt(this.dataset.y)
-      var $next = $('td[data-x=' + (x+1) + '][data-y=' + y + ']')
+    }
+  }).on('mouseleave', function(e) {
+    $(this).removeClass("phantom");
+    var x, y;
+    for (var i = 1; i < ship.length; i++) {
+      if (orientation === 'vertical') {
+        x = parseInt(this.dataset.x);
+        y = parseInt(this.dataset.y) + i;
+      } else if (orientation === 'horizontal') {
+        x = parseInt(this.dataset.x) + i;
+        y = parseInt(this.dataset.y);
+      }
+      var $next = $('td[data-x=' + x + '][data-y=' + y + ']')
       $next.removeClass("phantom");
-    })
-    $('.cell').on('click', function(e) {
-      var x = parseInt(this.dataset.x);
-      var y = parseInt(this.dataset.y)
-      $(".cell").off('mouseover');
-      $(".cell").off('mouseleave');
-      $(".cell").off('click');
-      $(this).addClass("ship")
-      $('td[data-x=' + (x+1) + '][data-y=' + y + ']').css("background-color", "").addClass("ship").removeClass('phantom');
-      $("#destroyer").hide();
-      $(this).removeClass('phantom');
-      trackButtons();
-    });
-  });
-});
+    }
+  }).on('click', function(e) {
+    $('#rotate').off();
+    $('.cell').off('mouseover').off('mouseleave').off('click');
+    $(this).addClass('ship').removeClass('phantom');
 
-$("#submarine").on("click", function(){
-  $("#rotate").off('click');
-
-  var boatLength = 3;
-  $('.cell').on('mouseover', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(this).addClass("phantom");
-    for (var i=1; i < boatLength; i++ ){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("phantom");
+    var x, y;
+    for (var i = 1; i < ship.length; i++) {
+      if (orientation === 'vertical') {
+        x = parseInt(this.dataset.x);
+        y = parseInt(this.dataset.y) + i;
+      } else if (orientation === 'horizontal') {
+        x = parseInt(this.dataset.x) + i;
+        y = parseInt(this.dataset.y);
       }
-  })
-  $('.cell').on('mouseleave', function(e) {
-    $(this).removeClass("phantom");
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    for (i=1; i<boatLength; i++){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').removeClass("phantom");
+      var $next = $('td[data-x=' + x + '][data-y=' + y + ']')
+      $next.removeClass("phantom").addClass('ship');
     }
-  })
-  $('.cell').on('click', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(".cell").off('mouseover');
-    $(".cell").off('mouseleave');
-    $(".cell").off('click');
-    $(this).addClass("ship")
-     for(i=1; i<boatLength; i++){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("ship").removeClass('phantom');
-    }
-    $("#submarine").hide();
-    $(this).removeClass('phantom');
+    $(ship.buttonId).remove();
     trackButtons();
   });
-
-  $("#rotate").on("click", function(){
-    $(".cell").off('mouseover');
-    $(".cell").off('mouseleave');
-    $(".cell").off('click');
-
-    $('.cell').on('mouseover', function(e) {
-      var x = parseInt(this.dataset.x)
-      var y = parseInt(this.dataset.y)
-      $(this).addClass("phantom");
-      for (var i=1; i < boatLength; i++ ){
-        $('td[data-x=' + (x+i) + '][data-y=' + y + ']').addClass("phantom");
-        }
-    })
-    $('.cell').on('mouseleave', function(e) {
-      $(this).removeClass("phantom");
-      var x = parseInt(this.dataset.x)
-      var y = parseInt(this.dataset.y)
-      for (i=1; i<boatLength; i++){
-        $('td[data-x=' + (x+i) + '][data-y=' + y + ']').removeClass("phantom");
-      }
-    })
-    $('.cell').on('click', function(e) {
-      var x = parseInt(this.dataset.x)
-      var y = parseInt(this.dataset.y)
-      $(".cell").off('mouseover');
-      $(".cell").off('mouseleave');
-      $(".cell").off('click');
-      $(this).addClass("ship")
-       for(i=1; i<boatLength; i++){
-        $('td[data-x=' + (x+i) + '][data-y=' + y + ']').addClass("ship").removeClass('phantom');
-      }
-      $("#submarine").hide();
-      $(this).removeClass('phantom');
-      trackButtons();
-    });
-  })
-})
-
-$("#cruiser").on("click", function(){
-  $("#rotate").off('click');
-  $(".cell").off('click');
-
-  var boatLength = 3;
-  $('.cell').on('mouseover', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(this).addClass("phantom");
-    for (var i=1; i < boatLength; i++ ){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("phantom");
-      }
-  })
-  $('.cell').on('mouseleave', function(e) {
-    $(this).removeClass("phantom");
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    for (i=1; i<boatLength; i++){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').removeClass("phantom");
-    }
-  })
-  $('.cell').on('click', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(".cell").off('mouseover');
-    $(".cell").off('mouseleave');
-    $(".cell").off('click');
-    $(this).addClass("ship")
-     for(i=1; i<boatLength; i++){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("ship").removeClass('phantom');
-    }
-    $("#cruiser").hide();
-    $(this).removeClass('phantom');
-    trackButtons();
-  });
-
-  $("#rotate").on("click", function(){
-    $(".cell").off('mouseover');
-    $(".cell").off('mouseleave');
-    $(".cell").off('click');
-
-    $('.cell').on('mouseover', function(e) {
-      var x = parseInt(this.dataset.x)
-      var y = parseInt(this.dataset.y)
-      $(this).addClass("phantom");
-      for (var i=1; i < boatLength; i++ ){
-        $('td[data-x=' + (x+i) + '][data-y=' + y + ']').addClass("phantom");
-        }
-    })
-    $('.cell').on('mouseleave', function(e) {
-      $(this).removeClass("phantom");
-      var x = parseInt(this.dataset.x)
-      var y = parseInt(this.dataset.y)
-      for (i=1; i<boatLength; i++){
-        $('td[data-x=' + (x+i) + '][data-y=' + y + ']').removeClass("phantom");
-      }
-    })
-    $('.cell').on('click', function(e) {
-      var x = parseInt(this.dataset.x)
-      var y = parseInt(this.dataset.y)
-      $(".cell").off('mouseover');
-      $(".cell").off('mouseleave');
-      $(".cell").off('click');
-      $("#rotate").off('click');
-      $(this).addClass("ship")
-       for(i=1; i<boatLength; i++){
-        $('td[data-x=' + (x+i) + '][data-y=' + y + ']').addClass("ship").removeClass('phantom');
-      }
-      $("#cruiser").hide();
-      $(this).removeClass('phantom');
-      trackButtons();
-    });
-  })
-});
-
-$("#battleship").on("click", function(){
-  $("#rotate").off('click');
-
-  var boatLength = 4;
-  $('.cell').on('mouseover', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(this).addClass("phantom");
-    for (var i=1; i < boatLength; i++ ){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("phantom");
-      }
-  })
-  $('.cell').on('mouseleave', function(e) {
-    $(this).removeClass("phantom");
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    for (i=1; i<boatLength; i++){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').removeClass("phantom");
-    }
-  })
-  $('.cell').on('click', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(".cell").off('mouseover');
-    $(".cell").off('mouseleave');
-    $(".cell").off('click');
-    $(this).addClass("ship")
-    for(i=1; i<boatLength; i++){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("ship").removeClass('phantom');
-    }
-    $("#battleship").hide();
-    $(this).removeClass('phantom');
-    trackButtons();
-  });
-
-  $("#rotate").on("click", function(){
-    $(".cell").off('mouseover');
-    $(".cell").off('mouseleave');
-    $(".cell").off('click');
-
-    $('.cell').on('mouseover', function(e) {
-      var x = parseInt(this.dataset.x)
-      var y = parseInt(this.dataset.y)
-      $(this).addClass("phantom");
-      for (var i=1; i < boatLength; i++ ){
-        $('td[data-x=' + (x+i) + '][data-y=' + y + ']').addClass("phantom");
-        }
-    })
-    $('.cell').on('mouseleave', function(e) {
-      $(this).removeClass("phantom");
-      var x = parseInt(this.dataset.x)
-      var y = parseInt(this.dataset.y)
-      for (i=1; i<boatLength; i++){
-        $('td[data-x=' + (x+i) + '][data-y=' + y + ']').removeClass("phantom");
-      }
-    })
-    $('.cell').on('click', function(e) {
-      var x = parseInt(this.dataset.x)
-      var y = parseInt(this.dataset.y)
-      $(".cell").off('mouseover');
-      $(".cell").off('mouseleave');
-      $(".cell").off('click');
-      $(this).addClass("ship")
-       for(i=1; i<boatLength; i++){
-        $('td[data-x=' + (x+i) + '][data-y=' + y + ']').addClass("ship").removeClass('phantom');
-      }
-      $("#battleship").hide();
-      $(this).removeClass('phantom');
-      trackButtons();
-    });
-  })
-});
-
-$("#carrier").on("click", function(){
-  $("#rotate").off('click');
-
-  var boatLength = 5;
-  $('.cell').on('mouseover', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(this).addClass("phantom");
-    for (var i=1; i < boatLength; i++ ){
-    $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("phantom");
-  }
-  })
-  $('.cell').on('mouseleave', function(e) {
-    $(this).removeClass("phantom");
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    for (i=1; i<boatLength; i++){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').removeClass("phantom");
-    }
-  })
-  $('.cell').on('click', function(e) {
-    var x = this.dataset.x
-    var y = parseInt(this.dataset.y)
-    $(".cell").off('mouseover');
-    $(".cell").off('mouseleave');
-    $(".cell").off('click');
-    $(this).addClass("ship")
-    for(i=1; i<boatLength; i++){
-      $('td[data-x=' + x + '][data-y=' + (y + i) + ']').addClass("ship").removeClass('phantom');
-    }
-    $("#carrier").hide();
-    $(this).removeClass('phantom');
-    trackButtons();
-  });
-
-   $("#rotate").on("click", function(){
-    $(".cell").off('mouseover');
-    $(".cell").off('mouseleave');
-    $(".cell").off('click');
-
-    $('.cell').on('mouseover', function(e) {
-      var x = parseInt(this.dataset.x)
-      var y = parseInt(this.dataset.y)
-      $(this).addClass("phantom");
-      for (var i=1; i < boatLength; i++ ){
-        $('td[data-x=' + (x+i) + '][data-y=' + y + ']').addClass("phantom");
-        }
-    })
-    $('.cell').on('mouseleave', function(e) {
-      $(this).removeClass("phantom");
-      var x = parseInt(this.dataset.x)
-      var y = parseInt(this.dataset.y)
-      for (i=1; i<boatLength; i++){
-        $('td[data-x=' + (x+i) + '][data-y=' + y + ']').removeClass("phantom");
-      }
-    })
-    $('.cell').on('click', function(e) {
-      var x = parseInt(this.dataset.x)
-      var y = parseInt(this.dataset.y)
-      $(".cell").off('mouseover');
-      $(".cell").off('mouseleave');
-      $(".cell").off('click');
-      $(this).addClass("ship")
-       for(i=1; i<boatLength; i++){
-        $('td[data-x=' + (x+i) + '][data-y=' + y + ']').addClass("ship").removeClass('phantom');
-      }
-      $("#carrier").hide();
-      $(this).removeClass('phantom');
-      trackButtons();
-    });
-  })
-});
+}
 
 $('form').on('submit', function(e) {
   e.preventDefault(e);

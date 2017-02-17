@@ -39,27 +39,6 @@ for (var i = 0; i < player_2_hits.length - 1; i++) {
   player_2_hits_positions.push(position);
 }
 
-var winner = null;
-var gameId = $('#player_board').attr('class');
-
-if (player_1_hits_positions.length === 17){
-  currentPlayer = null;
-} else if (player_2_hits_positions.length === 17) {
-  winner = "Player2";
-  currentPlayer = null;
-}
-
-if (winner != null){
-  $.ajax({
-    url: "/games/" + gameId + "/winner",
-    type: "POST",
-    data: { winner: winner }
-  }).done(function(response){
-    console.log(response);
-  });
-}
-
-
 var player_2_misses = $('#player_2_misses').text().split(" ");
 var player_2_miss_positions = [];
 for (var i = 0; i < player_2_misses.length - 1; i++) {
@@ -67,7 +46,31 @@ for (var i = 0; i < player_2_misses.length - 1; i++) {
   var position = { x: coordinates[0], y: coordinates[1]};
   player_2_miss_positions.push(position);
 }
-// console.log(player_2_miss_positions);
+
+var winner = null;
+var gameId = $('#player_board').attr('class');
+
+if (player_1_hits_positions.length === 17){
+  winner = "Player 1"
+  currentPlayer = null;
+} else if (player_2_hits_positions.length === 17) {
+  winner = "Player 2";
+  currentPlayer = null;
+}
+
+
+
+if (winner){
+  $('.current_turn').text(winner + " wins!!")
+  $.ajax({
+    url: "/games/" + gameId + "/winner",
+    type: "POST",
+    data: { winner: winner }
+  }).done(function(response){
+    // var winner = $('#game_winner').text();
+  });
+}
+
 
 var createGrid = function() {
   var grid = "<table>"

@@ -1,23 +1,25 @@
 <div>
-<h1 class="player">Player <%= session[:player] %></h1>
-<h1 class="opponent">Opponent</h1>
+  <h1 class="player">Player <%= session[:player] %></h1>
+  <h1 class="opponent">Opponent</h1>
 </div>
 <div class="clear">
 </div>
 <main class="game">
-<div id="player_board" class="<%= @game.id %>">
-  <div id="player_positions" style="display: none"><%= @positions.to_s %></div>
-  <div id="player_1_hits" style="display: none"><%= @player_1_hits.to_s %></div>
-  <div id="player_1_misses" style="display: none"><%= @player_1_misses.to_s %></div>
-  <div id="player_2_hits" style="display: none"><%= @player_2_hits.to_s %></div>
-  <div id="player_2_misses" style="display: none"><%= @player_2_misses.to_s %></div>
-  <div id="game_winner" style="display: none"><%= @winner.to_s %></div>
-</div>
-  <div id="opponent_board">
+  <div id="player_board" class="<%= @game.id %>">
+    <div id="player_positions" style="display: none"><%= @positions.to_s %></div>
+    <div id="player_1_hits" style="display: none"><%= @player_1_hits.to_s %></div>
+    <div id="player_1_misses" style="display: none"><%= @player_1_misses.to_s %></div>
+    <div id="player_2_hits" style="display: none"><%= @player_2_hits.to_s %></div>
+    <div id="player_2_misses" style="display: none"><%= @player_2_misses.to_s %></div>
+    <div id="game_winner" style="display: none"><%= @winner.to_s %></div>
   </div>
-
+  <div id="opponent_board"></div>
 </main>
 
-<h1 class="current_turn">Current Player: <span class="current_player">Player <%= @game.current_player %></h1>
+<% if @game.current_player %>
+  <h1 class="current_turn">Current Player: <span class="current_player">Player <%= @game.current_player %></h1>
+<% else %>
+  <h1 class="current_turn">Waiting for player to join...</h1>
+<% end %>
 
 <%= javascript_include_tag "play" %>

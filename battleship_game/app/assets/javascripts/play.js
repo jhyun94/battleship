@@ -139,22 +139,24 @@ if (currentPlayer === player) {
 $('.hit').off();
 $('.miss').off();
 
-(function poll() {
-  var gameId = $('#player_board').attr('class');
-  setTimeout(function() {
-    $.ajax({
-      url: '/games/' + gameId + '/current_player',
-      method: 'get'
-    }).done(function(response) {
-      console.log(response);
-      if (response === player) {
-        console.log("It's your turn!")
-        window.location.reload()
-      } else {
-        poll();
-      }
-    })
-  }, 5000)
-})();
+if (!winner) {
+  (function poll() {
+    var gameId = $('#player_board').attr('class');
+    setTimeout(function() {
+      $.ajax({
+        url: '/games/' + gameId + '/current_player',
+        method: 'get'
+      }).done(function(response) {
+        console.log(response);
+        if (response === player) {
+          console.log("It's your turn!")
+          window.location.reload()
+        } else {
+          poll();
+        }
+      })
+    }, 5000)
+  })();
+}
 
 });

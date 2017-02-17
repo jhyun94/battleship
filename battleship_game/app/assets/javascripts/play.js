@@ -4,8 +4,8 @@
 
 $(document).ready(function() {
 var player = $('.player').text();
+var currentPlayer = $('.current_player').text();
 var tableLength = 10;
-console.log(player);
 
 var player_positions = $('#player_positions').text().split(" ");
 var positions = [];
@@ -95,7 +95,8 @@ for (var i = 0; i < player_2_miss_positions.length; i++) {
   $(player1Board + ' td[data-x=' + player_2_miss_positions[i].x + '][data-y=' + player_2_miss_positions[i].y + ']').addClass('miss');
 }
 
-$("#opponent_board .cell").on('click', function(e){
+if (currentPlayer === player) {
+  $("#opponent_board .cell").on('click', function(e){
   var cell = this;
   var gameId = $('#player_board').attr('class');
   var cell_position = this.dataset.x + this.dataset.y
@@ -114,5 +115,10 @@ $("#opponent_board .cell").on('click', function(e){
     window.location.reload();
   })
 })
+
+}
+
+$('.hit').off();
+$('.miss').off();
 
 })

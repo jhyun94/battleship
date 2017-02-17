@@ -1,8 +1,7 @@
-//= require jquery
-//= require jquery_ujs
-//= require_tree .
-
 $(document).ready(function() {
+
+console.log("Play .js running");
+
 var player = $('.player').text();
 var currentPlayer = $('.current_player').text();
 var tableLength = 10;
@@ -46,7 +45,6 @@ for (var i = 0; i < player_2_misses.length - 1; i++) {
   var position = { x: coordinates[0], y: coordinates[1]};
   player_2_miss_positions.push(position);
 }
-console.log(player_2_miss_positions);
 
 var createGrid = function() {
   var grid = "<table>"
@@ -60,14 +58,13 @@ var createGrid = function() {
   grid += '</table>';
   return grid;
 }
+
 $('#opponent_board').append(createGrid());
 $("#player_board").append(createGrid());
 
 for (var i = 0; i < positions.length; i++) {
   $('#player_board td[data-x=' + positions[i].x + '][data-y=' + positions[i].y + ']').addClass('ship');
 }
-
-
 
 var player1Board;
 var player2Board;
@@ -97,28 +94,62 @@ for (var i = 0; i < player_2_miss_positions.length; i++) {
 
 if (currentPlayer === player) {
   $("#opponent_board .cell").on('click', function(e){
-  var cell = this;
-  var gameId = $('#player_board').attr('class');
-  var cell_position = this.dataset.x + this.dataset.y
-  $.ajax({
-    url: "/games/" + gameId + "/check?cell_position=" + cell_position,
-    type: "GET"
-  }).done(function(data){
-    $(cell).off();
-    if (data.response === "hit"){
-      $(cell).addClass('hit');
-    } else if (data.response === "miss") {
-      $(cell).addClass('miss');
-    } else {
-      console.log(data.response);
-    }
-    window.location.reload();
+    var cell = this;
+    var gameId = $('#player_board').attr('class');
+    var cell_position = this.dataset.x + this.dataset.y
+    $.ajax({
+      url: "/games/" + gameId + "/check?cell_position=" + cell_position,
+      type: "GET"
+    }).done(function(data){
+      $(cell).off();
+      if (data.response === "hit"){
+        $(cell).addClass('hit');
+      } else if (data.response === "miss") {
+        $(cell).addClass('miss');
+      } else {
+        console.log(data.response);
+      }
+      window.location.reload();
+    })
   })
-})
-
 }
 
 $('.hit').off();
 $('.miss').off();
 
-})
+(function poll() {
+  var gameId = $('#player_board').attr('class');
+  setTimeout(function() {
+    $.ajax({
+      url: '/games/' + gameId + '/current_player',
+      method: 'get'
+    }).done(function(response) {
+      console.log(response);
+      if (response === player) {
+        console.log("It's your turn!")
+        window.location.reload()
+      } else {
+        poll();
+      }
+    })
+  }, 5000)
+})();
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

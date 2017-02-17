@@ -8,7 +8,7 @@
 <main class="game">
 <div id="player_board" class="<%= @game.id %>">
   <div id="player_positions" style="display: none"><%= @positions.to_s %></div>
-  <div id="player_1_hits" style="display: none"><%= @player_1_hits %></div>
+  <div id="player_1_hits" style="display: none"><%= @player_1_hits.to_s %></div>
   <div id="player_1_misses" style="display: none"><%= @player_1_misses.to_s %></div>
   <div id="player_2_hits" style="display: none"><%= @player_2_hits.to_s %></div>
   <div id="player_2_misses" style="display: none"><%= @player_2_misses.to_s %></div>
@@ -16,3 +16,5 @@
   <div id="opponent_board">
   </div>
 </main>
+
+<%= javascript_include_tag "play" %>

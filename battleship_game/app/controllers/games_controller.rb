@@ -21,6 +21,10 @@ class GamesController < ApplicationController
     elsif session[:player] == 2
       @positions = @game.player_2_positions
     end
+    @player_1_hits = @game.player_1_hits
+    @player_1_misses = @game.player_1_misses
+    @player_2_hits = @game.player_2_hits
+    @player_2_misses = @game.player_2_misses
   end
 
   def current_player

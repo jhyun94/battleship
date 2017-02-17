@@ -33,6 +33,7 @@ h1 {
 .game {
   width:100%;
 }
+
 #player_board {
   display: inline-block;
   float: left;
@@ -45,7 +46,8 @@ h1 {
   float: right;
   width: 40%;
 }
-.player_1 {
+
+.player {
   float: left;
 }
 
@@ -53,8 +55,13 @@ h1 {
   float: right;
   margin-right: 25%;
 }
+
 .ship {
   background-color: black;
+}
+
+.cell.miss {
+  background-color: blue;
 }
 
 .phantom {

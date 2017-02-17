@@ -45,6 +45,13 @@ class GamesController < ApplicationController
     redirect_to game_url(game)
   end
 
+  def winner
+    @game = Game.find(params[:id])
+    @winner = params[:winner]
+    @game.winner = @winner
+    @game.save
+  end
+
   def create
     if session[:player] == 1
       game = Game.create(player_1_positions: game_params[:player_positions])

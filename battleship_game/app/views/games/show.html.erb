@@ -1,6 +1,5 @@
 <div>
-  <h1 class="player">Player <%= session[:player] %></h1>
-  <h1 class="current_turn">Current Player: <span class="current_player">Player <%= @game.current_player %></h1>
+<h1 class="player">Player <%= session[:player] %></h1>
 <h1 class="opponent">Opponent</h1>
 </div>
 <div class="clear">
@@ -12,9 +11,13 @@
   <div id="player_1_misses" style="display: none"><%= @player_1_misses.to_s %></div>
   <div id="player_2_hits" style="display: none"><%= @player_2_hits.to_s %></div>
   <div id="player_2_misses" style="display: none"><%= @player_2_misses.to_s %></div>
+  <div id="game_winner" style="display: none"><%= @winner.to_s %></div>
 </div>
   <div id="opponent_board">
   </div>
+
 </main>
+
+<h1 class="current_turn">Current Player: <span class="current_player">Player <%= @game.current_player %></h1>
 
 <%= javascript_include_tag "play" %>

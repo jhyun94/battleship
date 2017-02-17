@@ -18,12 +18,18 @@
 }
 
 body {
-  background-color: black;
+  background-color: #002F4B;
 }
 
 h1 {
   color: white;
 }
+
+#board {
+  display: inline-block;
+  width: 500px;
+}
+
 .cell {
   background-color: white;
   height: 50px;
@@ -53,21 +59,30 @@ h1 {
 
 .opponent{
   float: right;
-  margin-right: 25%;
+  margin-right: 31%;
 }
 
 .ship {
-  background-color: black;
+  background-color: #4d4d4d;
 }
 
 .cell.miss {
-  background-color: blue;
+  background-color: #3987c9;
+}
+
+.cell.hit {
+  background-color: #FF1C00;
 }
 
 .phantom {
   background-color: grey;
 }
 
+
 .clear {
   clear: both;
+}
+
+.current_turn {
+  clear:both;
 }

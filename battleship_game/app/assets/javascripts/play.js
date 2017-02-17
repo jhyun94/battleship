@@ -46,6 +46,28 @@ for (var i = 0; i < player_2_misses.length - 1; i++) {
   player_2_miss_positions.push(position);
 }
 
+var winner = null;
+var gameId = $('#player_board').attr('class');
+
+if (player_1_hits_positions.length === 17){
+  winner = "Player 1"
+  currentPlayer = null;
+} else if (player_2_hits_positions.length === 17) {
+  winner = "Player 2";
+  currentPlayer = null;
+}
+
+if (winner){
+  $('.current_turn').text(winner + " wins!!")
+  $.ajax({
+    url: "/games/" + gameId + "/winner",
+    type: "POST",
+    data: { winner: winner }
+  }).done(function(response){
+    // var winner = $('#game_winner').text();
+  });
+}
+
 var createGrid = function() {
   var grid = "<table>"
   for (var row = 0; row < tableLength; row++) {
@@ -65,7 +87,7 @@ $("#player_board").append(createGrid());
 for (var i = 0; i < positions.length; i++) {
   $('#player_board td[data-x=' + positions[i].x + '][data-y=' + positions[i].y + ']').addClass('ship');
 }
-
+  
 var player1Board;
 var player2Board;
 if (player === 'Player 1') {
@@ -94,23 +116,23 @@ for (var i = 0; i < player_2_miss_positions.length; i++) {
 
 if (currentPlayer === player) {
   $("#opponent_board .cell").on('click', function(e){
-    var cell = this;
-    var gameId = $('#player_board').attr('class');
-    var cell_position = this.dataset.x + this.dataset.y
-    $.ajax({
-      url: "/games/" + gameId + "/check?cell_position=" + cell_position,
-      type: "GET"
-    }).done(function(data){
-      $(cell).off();
-      if (data.response === "hit"){
-        $(cell).addClass('hit');
-      } else if (data.response === "miss") {
-        $(cell).addClass('miss');
-      } else {
-        console.log(data.response);
-      }
-      window.location.reload();
-    })
+  var cell = this;
+  var gameId = $('#player_board').attr('class');
+  var cell_position = this.dataset.x + this.dataset.y
+  $.ajax({
+    url: "/games/" + gameId + "/check?cell_position=" + cell_position,
+    type: "GET"
+  }).done(function(data){
+    $(cell).off();
+    if (data.response === "hit"){
+    $(cell).addClass('hit');
+    } else if (data.response === "miss") {
+      $(cell).addClass('miss');
+    } else {
+      console.log(data.response);
+    }
+    window.location.reload();
+
   })
 }
 
@@ -136,20 +158,3 @@ $('.miss').off();
 })();
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

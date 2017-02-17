@@ -1,8 +1,20 @@
-//= require jquery
-//= require jquery_ujs
-//= require_tree .
-
 $(document).ready(function() {
+var tableLength = 10;
+
+function createGrid() {
+  var grid = "<table>"
+  for (var row = 0; row < tableLength; row++) {
+    grid += '<tr>';
+    for (var col = 0; col < tableLength; col++) {
+      grid += '<td class="cell" data-x=' + col + ' data-y=' + row + '></td>';
+    }
+    grid += '</tr>';
+  }
+  grid += '</table>';
+  return grid;
+}
+
+$('#board').append(createGrid());
 
 $("#destroyer").on("click", function(){
   $("#rotate").off('click');

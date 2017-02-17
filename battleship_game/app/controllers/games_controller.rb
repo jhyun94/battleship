@@ -29,7 +29,7 @@ class GamesController < ApplicationController
 
   def current_player
     game = Game.find(params[:id])
-    game.current_player.to_s
+    render plain: "Player #{game.current_player}"
   end
 
   def check

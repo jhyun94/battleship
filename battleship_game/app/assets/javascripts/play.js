@@ -1,8 +1,7 @@
-//= require jquery
-//= require jquery_ujs
-//= require_tree .
-
 $(document).ready(function() {
+
+console.log("Play .js running");
+
 var player = $('.player').text();
 var currentPlayer = $('.current_player').text();
 var tableLength = 10;
@@ -58,8 +57,6 @@ if (player_1_hits_positions.length === 17){
   currentPlayer = null;
 }
 
-
-
 if (winner){
   $('.current_turn').text(winner + " wins!!")
   $.ajax({
@@ -70,7 +67,6 @@ if (winner){
     // var winner = $('#game_winner').text();
   });
 }
-
 
 var createGrid = function() {
   var grid = "<table>"
@@ -84,14 +80,14 @@ var createGrid = function() {
   grid += '</table>';
   return grid;
 }
+
 $('#opponent_board').append(createGrid());
 $("#player_board").append(createGrid());
 
 for (var i = 0; i < positions.length; i++) {
   $('#player_board td[data-x=' + positions[i].x + '][data-y=' + positions[i].y + ']').addClass('ship');
 }
-
-
+  
 var player1Board;
 var player2Board;
 if (player === 'Player 1') {
@@ -136,12 +132,29 @@ if (currentPlayer === player) {
       console.log(data.response);
     }
     window.location.reload();
-  })
-})
 
+  })
 }
 
 $('.hit').off();
 $('.miss').off();
 
-})
+(function poll() {
+  var gameId = $('#player_board').attr('class');
+  setTimeout(function() {
+    $.ajax({
+      url: '/games/' + gameId + '/current_player',
+      method: 'get'
+    }).done(function(response) {
+      console.log(response);
+      if (response === player) {
+        console.log("It's your turn!")
+        window.location.reload()
+      } else {
+        poll();
+      }
+    })
+  }, 5000)
+})();
+
+});

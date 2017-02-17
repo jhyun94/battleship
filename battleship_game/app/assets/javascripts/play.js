@@ -3,7 +3,7 @@ $(document).ready(function() {
 console.log("Play .js running");
 
 var player = $('.player').text();
-var currentPlayer = $('.current_player').text();
+var currentPlayer = $('span.current_player').text();
 var tableLength = 10;
 
 var player_positions = $('#player_positions').text().split(" ");
@@ -49,7 +49,7 @@ for (var i = 0; i < player_2_misses.length - 1; i++) {
 var winner = null;
 var gameId = $('#player_board').attr('class');
 
-if (player_1_hits_positions.length === 17){
+if (player_1_hits_positions.length === 17) {
   winner = "Player 1"
   currentPlayer = null;
 } else if (player_2_hits_positions.length === 17) {
@@ -64,7 +64,10 @@ if (winner){
     type: "POST",
     data: { winner: winner }
   }).done(function(response){
-    // var winner = $('#game_winner').text();
+    var $playAgain = $('<a></a>');
+    $playAgain.attr('href', '/');
+    $playAgain.text('Play Again?');
+    $('main').append($playAgain);
   });
 }
 
@@ -151,6 +154,9 @@ if (!winner) {
         if (response === player) {
           console.log("It's your turn!")
           window.location.reload()
+        } else if (!currentPlayer && response === "Player 2") {
+          $('.current_turn').text("Player has joined the game!");
+          poll();
         } else {
           poll();
         }
